@@ -16,6 +16,7 @@ public class HystrixCircuitBreaker extends HystrixCommand<Result> implements Cir
 
     /**
      * 断路器配置未来可优化为动态配置，策略不写死在代码中
+     *
      * @param invoker
      * @param invocation
      */
@@ -48,6 +49,7 @@ public class HystrixCircuitBreaker extends HystrixCommand<Result> implements Cir
 
     /**
      * 根据需要重写失败回退逻辑（降级逻辑）
+     *
      * @return
      */
     @Override

@@ -10,6 +10,7 @@ import com.alibaba.dubbo.rpc.Invoker;
  * @create 2017-04-25 13:25
  **/
 public class HystrixCircuitBreakerFactory extends AbstractCircuitBreakerFactory {
+
     /**
      * @param invoker
      * @param invocation

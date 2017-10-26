@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentMap;
  * @create 2017-04-25 12:04
  **/
 public abstract class AbstractCircuitBreakerFactory implements CircuitBreakerFactory {
+
     /**
      * Hystrix 断路器由于自身有对象缓存机制，因此不使用以下注释的对象缓存机制（Hystrix会报错提示需要创建新的对象），
      * 如果使用其他断路方案可以使用以下缓存机制提高效率

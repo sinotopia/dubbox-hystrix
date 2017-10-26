@@ -9,8 +9,10 @@ import com.alibaba.dubbo.rpc.Result;
  * @create 2017-04-25 11:55
  **/
 public interface CircuitBreaker {
+
     /**
      * execute circuit breaker
+     *
      * @return com.alibaba.dubbo.rpc.Result
      */
     Result circuitBreak();

@@ -13,6 +13,7 @@ import com.alibaba.dubbo.rpc.*;
  **/
 @Activate(group = Constants.CONSUMER, value = Constants.CIRCUIT_BREAKER_KEY)
 public class CircuitBreakerFilter implements Filter {
+
     private CircuitBreakerFactory circuitBreakerFactory;
 
     public void setCircuitBreakerFactory(CircuitBreakerFactory circuitBreakerFactory) {

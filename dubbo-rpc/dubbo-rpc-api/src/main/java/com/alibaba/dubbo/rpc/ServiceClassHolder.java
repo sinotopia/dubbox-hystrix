@@ -9,7 +9,7 @@ public class ServiceClassHolder {
 
     private static final ServiceClassHolder INSTANCE = new ServiceClassHolder();
 
-    private final ThreadLocal<Class> holder  = new ThreadLocal<Class>();
+    private final ThreadLocal<Class> holder = new ThreadLocal<Class>();
 
     public static ServiceClassHolder getInstance() {
         return INSTANCE;

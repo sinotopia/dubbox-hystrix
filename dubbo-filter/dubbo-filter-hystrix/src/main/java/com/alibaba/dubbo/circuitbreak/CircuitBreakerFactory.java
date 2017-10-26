@@ -14,8 +14,12 @@ import com.alibaba.dubbo.rpc.Invoker;
  **/
 @SPI("hystrix")
 public interface CircuitBreakerFactory {
+
     /**
      * CircuitBreaker factory
+     *
+     * @param invoker
+     * @param invocation
      * @return com.alibaba.dubbo.hystrix.CircuitBreaker
      */
     @Adaptive(Constants.CIRCUIT_BREAKER_KEY)
