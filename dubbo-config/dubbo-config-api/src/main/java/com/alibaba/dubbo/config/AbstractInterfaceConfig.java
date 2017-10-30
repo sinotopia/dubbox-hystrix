@@ -42,64 +42,98 @@ import com.alibaba.dubbo.rpc.support.MockInvoker;
 
 /**
  * AbstractDefaultConfig
- * 
+ *
  * @author william.liangf
  * @export
  */
 public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
 
-    private static final long      serialVersionUID = -1559314110797223229L;
+    private static final long serialVersionUID = -1559314110797223229L;
 
-    // 服务接口的本地实现类名
-    protected String               local;
+    /**
+     * 服务接口的本地实现类名
+     */
+    protected String local;
 
-    // 服务接口的本地实现类名
-    protected String               stub;
+    /**
+     * 服务接口的本地实现类名
+     */
+    protected String stub;
 
-    // 服务监控
-    protected MonitorConfig        monitor;
-    
-    // 代理类型
-    protected String               proxy;
-    
-    // 集群方式
-    protected String               cluster;
+    /**
+     * 服务监控
+     */
+    protected MonitorConfig monitor;
 
-    // 过滤器
-    protected String               filter;
-    
-    // 监听器
-    protected String               listener;
+    /**
+     * 代理类型
+     */
+    protected String proxy;
 
-    // 负责人
-    protected String               owner;
+    /**
+     * 集群方式
+     */
+    protected String cluster;
 
-    // 连接数限制,0表示共享连接，否则为该服务独享连接数
-    protected Integer              connections;
-    
-    // 连接数限制
-    protected String               layer;
-    
-    // 应用信息
-    protected ApplicationConfig    application;
-    
-    // 模块信息
-    protected ModuleConfig         module;
+    /**
+     * 过滤器
+     */
+    protected String filter;
 
-    // 注册中心
+    /**
+     * 监听器
+     */
+    protected String listener;
+
+    /**
+     * 负责人
+     */
+    protected String owner;
+
+    /**
+     * 连接数限制,0表示共享连接，否则为该服务独享连接数
+     */
+    protected Integer connections;
+
+    /**
+     * 连接数限制
+     */
+    protected String layer;
+
+    /**
+     * 应用信息
+     */
+    protected ApplicationConfig application;
+
+    /**
+     * 模块信息
+     */
+    protected ModuleConfig module;
+
+    /**
+     * 注册中心
+     */
     protected List<RegistryConfig> registries;
-    
-    // callback实例个数限制
-    private Integer                callbacks;
-    
-    // 连接事件
-    protected String              onconnect;
-    
-    // 断开事件
-    protected String              ondisconnect;
 
-    // 服务暴露或引用的scope,如果为local，则表示只在当前JVM内查找.
-	private String scope;
+    /**
+     * callback实例个数限制
+     */
+    private Integer callbacks;
+
+    /**
+     * 连接事件
+     */
+    protected String onconnect;
+
+    /**
+     * 断开事件
+     */
+    protected String ondisconnect;
+
+    /**
+     * 服务暴露或引用的scope,如果为local，则表示只在当前JVM内查找.
+     */
+    private String scope;
 
     protected void checkRegistry() {
         // 兼容旧版本
@@ -116,13 +150,13 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
             }
         }
         if ((registries == null || registries.size() == 0)) {
-            throw new IllegalStateException((getClass().getSimpleName().startsWith("Reference") 
-                    ? "No such any registry to refer service in consumer " 
-                        : "No such any registry to export service in provider ")
-                                                    + NetUtils.getLocalHost()
-                                                    + " use dubbo version "
-                                                    + Version.getVersion()
-                                                    + ", Please add <dubbo:registry address=\"...\" /> to your spring config. If you want unregister, please set <dubbo:service registry=\"N/A\" />");
+            throw new IllegalStateException((getClass().getSimpleName().startsWith("Reference")
+                    ? "No such any registry to refer service in consumer "
+                    : "No such any registry to export service in provider ")
+                    + NetUtils.getLocalHost()
+                    + " use dubbo version "
+                    + Version.getVersion()
+                    + ", Please add <dubbo:registry address=\"...\" /> to your spring config. If you want unregister, please set <dubbo:service registry=\"N/A\" />");
         }
         for (RegistryConfig registryConfig : registries) {
             appendProperties(registryConfig);
@@ -140,10 +174,10 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         }
         if (application == null) {
             throw new IllegalStateException(
-                                            "No such application config! Please add <dubbo:application name=\"...\" /> to your spring config.");
+                    "No such application config! Please add <dubbo:application name=\"...\" /> to your spring config.");
         }
         appendProperties(application);
-        
+
         String wait = ConfigUtils.getProperty(Constants.SHUTDOWN_WAIT_KEY);
         if (wait != null && wait.trim().length() > 0) {
             System.setProperty(Constants.SHUTDOWN_WAIT_KEY, wait.trim());
@@ -154,7 +188,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
             }
         }
     }
-    
+
     protected List<URL> loadRegistries(boolean provider) {
         checkRegistry();
         List<URL> registryList = new ArrayList<URL>();
@@ -162,14 +196,14 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
             for (RegistryConfig config : registries) {
                 String address = config.getAddress();
                 if (address == null || address.length() == 0) {
-                	address = Constants.ANYHOST_VALUE;
+                    address = Constants.ANYHOST_VALUE;
                 }
                 String sysaddress = System.getProperty("dubbo.registry.address");
                 if (sysaddress != null && sysaddress.length() > 0) {
                     address = sysaddress;
                 }
-                if (address != null && address.length() > 0 
-                        && ! RegistryConfig.NO_AVAILABLE.equalsIgnoreCase(address)) {
+                if (address != null && address.length() > 0
+                        && !RegistryConfig.NO_AVAILABLE.equalsIgnoreCase(address)) {
                     Map<String, String> map = new HashMap<String, String>();
                     appendParameters(map, application);
                     appendParameters(map, config);
@@ -179,7 +213,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
                     if (ConfigUtils.getPid() > 0) {
                         map.put(Constants.PID_KEY, String.valueOf(ConfigUtils.getPid()));
                     }
-                    if (! map.containsKey("protocol")) {
+                    if (!map.containsKey("protocol")) {
                         if (ExtensionLoader.getExtensionLoader(RegistryFactory.class).hasExtension("remote")) {
                             map.put("protocol", "remote");
                         } else {
@@ -191,7 +225,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
                         url = url.addParameter(Constants.REGISTRY_KEY, url.getProtocol());
                         url = url.setProtocol(Constants.REGISTRY_PROTOCOL);
                         if ((provider && url.getParameter(Constants.REGISTER_KEY, true))
-                                || (! provider && url.getParameter(Constants.SUBSCRIBE_KEY, true))) {
+                                || (!provider && url.getParameter(Constants.SUBSCRIBE_KEY, true))) {
                             registryList.add(url);
                         }
                     }
@@ -200,7 +234,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         }
         return registryList;
     }
-    
+
     protected URL loadMonitor(URL registryURL) {
         if (monitor == null) {
             String monitorAddress = ConfigUtils.getProperty("dubbo.monitor.address");
@@ -227,7 +261,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
             address = sysaddress;
         }
         if (ConfigUtils.isNotEmpty(address)) {
-            if (! map.containsKey(Constants.PROTOCOL_KEY)) {
+            if (!map.containsKey(Constants.PROTOCOL_KEY)) {
                 if (ExtensionLoader.getExtensionLoader(MonitorFactory.class).hasExtension("logstat")) {
                     map.put(Constants.PROTOCOL_KEY, "logstat");
                 } else {
@@ -240,14 +274,14 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         }
         return null;
     }
-    
+
     protected void checkInterfaceAndMethods(Class<?> interfaceClass, List<MethodConfig> methods) {
         // 接口不能为空
         if (interfaceClass == null) {
             throw new IllegalStateException("interface not allow null!");
         }
         // 检查接口类型必需为接口
-        if(! interfaceClass.isInterface()) { 
+        if (!interfaceClass.isInterface()) {
             throw new IllegalStateException("The interface class " + interfaceClass + " is not a interface!");
         }
         // 检查方法是否在接口中存在
@@ -271,11 +305,11 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
             }
         }
     }
-    
+
     protected void checkStubAndMock(Class<?> interfaceClass) {
         if (ConfigUtils.isNotEmpty(local)) {
             Class<?> localClass = ConfigUtils.isDefault(local) ? ReflectUtils.forName(interfaceClass.getName() + "Local") : ReflectUtils.forName(local);
-            if (! interfaceClass.isAssignableFrom(localClass)) {
+            if (!interfaceClass.isAssignableFrom(localClass)) {
                 throw new IllegalStateException("The local implemention class " + localClass.getName() + " not implement interface " + interfaceClass.getName());
             }
             try {
@@ -286,7 +320,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         }
         if (ConfigUtils.isNotEmpty(stub)) {
             Class<?> localClass = ConfigUtils.isDefault(stub) ? ReflectUtils.forName(interfaceClass.getName() + "Stub") : ReflectUtils.forName(stub);
-            if (! interfaceClass.isAssignableFrom(localClass)) {
+            if (!interfaceClass.isAssignableFrom(localClass)) {
                 throw new IllegalStateException("The local implemention class " + localClass.getName() + " not implement interface " + interfaceClass.getName());
             }
             try {
@@ -305,7 +339,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
                 }
             } else {
                 Class<?> mockClass = ConfigUtils.isDefault(mock) ? ReflectUtils.forName(interfaceClass.getName() + "Mock") : ReflectUtils.forName(mock);
-                if (! interfaceClass.isAssignableFrom(mockClass)) {
+                if (!interfaceClass.isAssignableFrom(mockClass)) {
                     throw new IllegalStateException("The mock implemention class " + mockClass.getName() + " not implement interface " + interfaceClass.getName());
                 }
                 try {
@@ -318,8 +352,8 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     }
 
     /**
-     * @deprecated Replace to <code>getStub()</code>
      * @return local
+     * @deprecated Replace to <code>getStub()</code>
      */
     @Deprecated
     public String getLocal() {
@@ -327,8 +361,8 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     }
 
     /**
-     * @deprecated Replace to <code>setStub(String)</code>
      * @param local
+     * @deprecated Replace to <code>setStub(String)</code>
      */
     @Deprecated
     public void setLocal(String local) {
@@ -337,8 +371,8 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     }
 
     /**
-     * @deprecated Replace to <code>setStub(Boolean)</code>
      * @param local
+     * @deprecated Replace to <code>setStub(Boolean)</code>
      */
     @Deprecated
     public void setLocal(Boolean local) {
@@ -348,7 +382,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
             setLocal(String.valueOf(local));
         }
     }
-    
+
     public String getStub() {
         return stub;
     }
@@ -365,7 +399,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
             setStub(String.valueOf(stub));
         }
     }
-    
+
     public String getCluster() {
         return cluster;
     }
@@ -378,7 +412,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     public String getProxy() {
         return proxy;
     }
-    
+
     public void setProxy(String proxy) {
         checkExtension(ProxyFactory.class, "proxy", proxy);
         this.proxy = proxy;
@@ -396,7 +430,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     public String getFilter() {
         return filter;
     }
-    
+
     public void setFilter(String filter) {
         checkMultiExtension(Filter.class, "filter", filter);
         this.filter = filter;
@@ -407,7 +441,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         checkMultiExtension(InvokerListener.class, "listener", listener);
         return listener;
     }
-    
+
     public void setListener(String listener) {
         this.listener = listener;
     }
@@ -451,9 +485,9 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         return registries;
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public void setRegistries(List<? extends RegistryConfig> registries) {
-        this.registries = (List<RegistryConfig>)registries;
+        this.registries = (List<RegistryConfig>) registries;
     }
 
     public MonitorConfig getMonitor() {
@@ -473,7 +507,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     }
 
     public void setOwner(String owner) {
-    	checkMultiName("owner", owner);
+        checkMultiName("owner", owner);
         this.owner = owner;
     }
 
@@ -501,12 +535,12 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         this.ondisconnect = ondisconnect;
     }
 
-	public String getScope() {
-		return scope;
-	}
+    public String getScope() {
+        return scope;
+    }
 
-	public void setScope(String scope) {
-		this.scope = scope;
-	}
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
 
 }

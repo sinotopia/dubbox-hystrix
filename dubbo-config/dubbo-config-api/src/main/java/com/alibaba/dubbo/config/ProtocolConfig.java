@@ -32,111 +32,174 @@ import com.alibaba.dubbo.rpc.Protocol;
 
 /**
  * ProtocolConfig
- * 
+ *
  * @author william.liangf
  * @export
  */
 public class ProtocolConfig extends AbstractConfig {
 
-    private static final long   serialVersionUID = 6913423882496634749L;
+    private static final long serialVersionUID = 6913423882496634749L;
 
-    // 服务协议
-    private String              name;
+    /**
+     * 服务协议
+     */
+    private String name;
 
-    // 服务IP地址(多网卡时使用)
-    private String              host;
+    /**
+     * 服务IP地址(多网卡时使用)
+     */
+    private String host;
 
-    // 服务端口
-    private Integer             port;
+    /**
+     * 服务端口
+     */
+    private Integer port;
 
-    // 上下文路径
-    private String              contextpath;
-    
-    // 线程池类型
-    private String              threadpool;
-    
-    // 线程池大小(固定大小)
-    private Integer             threads;
-    
-    // IO线程池大小(固定大小)
-    private Integer             iothreads;
-    
-    // 线程池队列大小
-    private Integer             queues;
-    
-    // 最大接收连接数
-    private Integer             accepts;
-    
-    // 协议编码
-    private String              codec;
-    
-    // 序列化方式
-    private String              serialization;
-    
-    // 字符集
-    private String              charset;
-    
-    // 最大请求数据长度
-    private Integer             payload;
-    
-    // 缓存区大小
-    private Integer             buffer;
-    
-    // 心跳间隔
-    private Integer             heartbeat;
+    /**
+     * 上下文路径
+     */
+    private String contextpath;
 
-    // 访问日志
-    private String              accesslog;
-    
-    // 网络传输方式
-    private String              transporter;
-    
-    // 信息交换方式
-    private String              exchanger;
-    
-    // 信息线程模型派发方式
-    private String              dispatcher;
+    /**
+     * 线程池类型
+     */
+    private String threadpool;
 
-    // 对称网络组网方式
-    private String              networker;
-    
-    // 服务器端实现
-    private String              server;
-    
-    // 客户端实现
-    private String              client;
-    
-    // 支持的telnet命令，多个命令用逗号分隔
-    private String              telnet;
-    
-    // 命令行提示符
-    private String              prompt;
+    /**
+     * 线程池大小(固定大小)
+     */
+    private Integer threads;
 
-    // status检查
-    private String              status;
-    
-    // 是否注册
-    private Boolean             register;
+    /**
+     * IO线程池大小(固定大小)
+     */
+    private Integer iothreads;
 
-    // 是否长连接
-    // TODO add this to provider config
+    /**
+     * 线程池队列大小
+     */
+    private Integer queues;
+
+    /**
+     * 最大接收连接数
+     */
+    private Integer accepts;
+
+    /**
+     * 协议编码
+     */
+    private String codec;
+
+    /**
+     * 序列化方式
+     */
+    private String serialization;
+
+    /**
+     * 字符集
+     */
+    private String charset;
+
+    /**
+     * 最大请求数据长度
+     */
+    private Integer payload;
+
+    /**
+     * 缓存区大小
+     */
+    private Integer buffer;
+
+    /**
+     * 心跳间隔
+     */
+    private Integer heartbeat;
+
+    /**
+     * 访问日志
+     */
+    private String accesslog;
+
+    /**
+     * 网络传输方式
+     */
+    private String transporter;
+
+    /**
+     * 信息交换方式
+     */
+    private String exchanger;
+
+    /**
+     * 信息线程模型派发方式
+     */
+    private String dispatcher;
+
+    /**
+     * 对称网络组网方式
+     */
+    private String networker;
+
+    /**
+     * 服务器端实现
+     */
+    private String server;
+
+    /**
+     * 客户端实现
+     */
+    private String client;
+
+    /**
+     * 支持的telnet命令，多个命令用逗号分隔
+     */
+    private String telnet;
+
+    /**
+     * 命令行提示符
+     */
+    private String prompt;
+
+    /**
+     * status检查
+     */
+    private String status;
+
+    /**
+     * 是否注册
+     */
+    private Boolean register;
+
+    /**
+     * 否长连接
+     * TODO add this to provider config
+     */
     private Boolean keepAlive;
 
-    // 序列化的优化器的实现类名
-    // TODO add this to provider config
+    /**
+     * 序列化的优化器的实现类名
+     * TODO add this to provider config
+     */
     private String optimizer;
 
+    /**
+     *
+     */
     private String extension;
-    
-    // 参数
+
+    /**
+     * 参数
+     */
     private Map<String, String> parameters;
 
-    // 是否为缺省
+    /**
+     * 是否为缺省
+     */
     private Boolean isDefault;
-    
+
     public ProtocolConfig() {
     }
-    
+
     public ProtocolConfig(String name) {
         setName(name);
     }
@@ -145,7 +208,7 @@ public class ProtocolConfig extends AbstractConfig {
         setName(name);
         setPort(port);
     }
-    
+
     @Parameter(excluded = true)
     public String getName() {
         return name;
@@ -227,15 +290,15 @@ public class ProtocolConfig extends AbstractConfig {
     public Integer getQueues() {
         return queues;
     }
-    
+
     public void setQueues(Integer queues) {
         this.queues = queues;
     }
-    
+
     public Integer getAccepts() {
         return accepts;
     }
-    
+
     public void setAccepts(Integer accepts) {
         this.accepts = accepts;
     }
@@ -254,7 +317,7 @@ public class ProtocolConfig extends AbstractConfig {
     public String getSerialization() {
         return serialization;
     }
-    
+
     public void setSerialization(String serialization) {
         if ("dubbo".equals(name)) {
             checkMultiExtension(Serialization.class, "serialization", serialization);
@@ -315,11 +378,11 @@ public class ProtocolConfig extends AbstractConfig {
         }
         this.client = client;
     }
-    
+
     public String getAccesslog() {
         return accesslog;
     }
-    
+
     public void setAccesslog(String accesslog) {
         this.accesslog = accesslog;
     }
@@ -327,7 +390,7 @@ public class ProtocolConfig extends AbstractConfig {
     public String getTelnet() {
         return telnet;
     }
-    
+
     public void setTelnet(String telnet) {
         checkMultiExtension(TelnetHandler.class, "telnet", telnet);
         this.telnet = telnet;
@@ -345,7 +408,7 @@ public class ProtocolConfig extends AbstractConfig {
     public String getStatus() {
         return status;
     }
-    
+
     public void setStatus(String status) {
         checkMultiExtension(StatusChecker.class, "status", status);
         this.status = status;
@@ -354,24 +417,24 @@ public class ProtocolConfig extends AbstractConfig {
     public Boolean isRegister() {
         return register;
     }
-    
+
     public void setRegister(Boolean register) {
         this.register = register;
     }
-    
+
     public String getTransporter() {
         return transporter;
     }
-    
+
     public void setTransporter(String transporter) {
         checkExtension(Transporter.class, "transporter", transporter);
         this.transporter = transporter;
     }
-    
+
     public String getExchanger() {
         return exchanger;
     }
-    
+
     public void setExchanger(String exchanger) {
         checkExtension(Exchanger.class, "exchanger", exchanger);
         this.exchanger = exchanger;
@@ -379,6 +442,7 @@ public class ProtocolConfig extends AbstractConfig {
 
     /**
      * 单词拼写错误，请使用{@link #getDispatcher()}
+     *
      * @deprecated {@link #getDispatcher()}
      */
     @Deprecated
@@ -389,6 +453,7 @@ public class ProtocolConfig extends AbstractConfig {
 
     /**
      * 单词拼写错误，请使用{@link #setDispatcher(String)
+     *
      * @deprecated {@link #setDispatcher(String)}
      */
     @Deprecated
@@ -455,7 +520,8 @@ public class ProtocolConfig extends AbstractConfig {
 
     public void destory() {
         if (name != null) {
-            ExtensionLoader.getExtensionLoader(Protocol.class).getExtension(name).destroy();;
+            ExtensionLoader.getExtensionLoader(Protocol.class).getExtension(name).destroy();
+            ;
         }
     }
 
